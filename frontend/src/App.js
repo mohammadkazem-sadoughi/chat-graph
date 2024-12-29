@@ -4,6 +4,7 @@ import LeftMenu from './components/LeftMenu';
 import GraphView from './components/GraphView';
 import ChatInterface from './components/ChatInterface';
 import axios from 'axios';
+import Header from './components/Header';
 
 axios.defaults.baseURL = 'http://localhost:5001';
 axios.defaults.headers.common['Content-Type'] = 'application/json';
@@ -16,6 +17,8 @@ function App() {
 
   const [leftMenuWidth, setLeftMenuWidth] = useState(250); // Default width
   const [graphHeight, setGraphHeight] = useState(60); // Default height percentage
+  const [isLeftMenuVisible, setIsLeftMenuVisible] = useState(true);
+  const [isGraphViewVisible, setIsGraphViewVisible] = useState(true);
 
   const fetchSessions = useCallback(async () => {
     try {
@@ -68,21 +71,27 @@ function App() {
   }, [activeSessionId, updateActiveNode]);
 
   const handleLeftResize = useCallback((mouseDownEvent) => {
+    mouseDownEvent.preventDefault();
     const startX = mouseDownEvent.clientX;
     const startWidth = leftMenuWidth;
 
     const doDrag = (mouseMoveEvent) => {
+      mouseMoveEvent.preventDefault();
       const newWidth = startWidth + mouseMoveEvent.clientX - startX;
-      setLeftMenuWidth(Math.max(200, Math.min(newWidth, window.innerWidth - 200)));
+      setLeftMenuWidth(Math.max(200, Math.min(newWidth, window.innerWidth - 400)));
     };
 
     const stopDrag = () => {
       document.removeEventListener('mousemove', doDrag);
       document.removeEventListener('mouseup', stopDrag);
+      document.body.style.cursor = 'default';
+      document.body.style.userSelect = 'auto';
     };
 
     document.addEventListener('mousemove', doDrag);
     document.addEventListener('mouseup', stopDrag);
+    document.body.style.cursor = 'col-resize';
+    document.body.style.userSelect = 'none';
   }, [leftMenuWidth]);
 
   const handleVerticalResize = useCallback((mouseDownEvent) => {
@@ -198,40 +207,54 @@ function App() {
 
   return (
     <div className="app">
-      <div className="left-menu-container" style={{ width: `${leftMenuWidth}px` }}>
-        <LeftMenu 
-          sessions={sessions}
-          activeSessionId={activeSessionId}
-          setActiveSessionId={setActiveSessionId}
-          createNewSession={createNewSession}
-          deleteSession={deleteSession}
-          clearAllSessions={clearAllSessions}
-        />
-        <div className="vertical-resizer" onMouseDown={handleLeftResize}></div>
-      </div>
-      <div className="main-content">
-        <GraphView 
-          graph={graph} 
-          setGraph={setGraph} 
-          setActiveNodeId={setActiveNodeIdAndUpdate} 
-          activeNodeId={activeNodeId}
-          activeSessionId={activeSessionId}
-          height={`${graphHeight}%`}
-          fetchNodes={fetchNodes}
-          onNodeClick={handleNodeClick}
-        />
-        <div className="horizontal-resizer" onMouseDown={handleVerticalResize}></div>
-        <ChatInterface 
-          graph={graph} 
-          setGraph={setGraph} 
-          activeNodeId={activeNodeId}
-          setActiveNodeId={setActiveNodeIdAndUpdate}
-          fetchNodes={() => fetchNodes(activeSessionId)}
-          activeSessionId={activeSessionId}
-          height={`${100 - graphHeight}%`}
-          updateSessionName={updateSessionName}
-          onNodeClick={handleNodeClick}
-        />
+      <Header 
+        onToggleLeftMenu={() => setIsLeftMenuVisible(!isLeftMenuVisible)}
+        onToggleGraphView={() => setIsGraphViewVisible(!isGraphViewVisible)}
+        isLeftMenuVisible={isLeftMenuVisible}
+        isGraphViewVisible={isGraphViewVisible}
+      />
+      <div className="app-content">
+        {isLeftMenuVisible && (
+          <div className="left-menu-container" style={{ width: `${leftMenuWidth}px` }}>
+            <LeftMenu 
+              sessions={sessions}
+              activeSessionId={activeSessionId}
+              setActiveSessionId={setActiveSessionId}
+              createNewSession={createNewSession}
+              deleteSession={deleteSession}
+              clearAllSessions={clearAllSessions}
+            />
+            <div className="vertical-resizer" onMouseDown={handleLeftResize}></div>
+          </div>
+        )}
+        <div className="main-content">
+          {isGraphViewVisible && (
+            <>
+              <GraphView 
+                graph={graph} 
+                setGraph={setGraph} 
+                setActiveNodeId={setActiveNodeIdAndUpdate} 
+                activeNodeId={activeNodeId}
+                activeSessionId={activeSessionId}
+                height={`${graphHeight}%`}
+                fetchNodes={fetchNodes}
+                onNodeClick={handleNodeClick}
+              />
+              <div className="horizontal-resizer" onMouseDown={handleVerticalResize}></div>
+            </>
+          )}
+          <ChatInterface 
+            graph={graph} 
+            setGraph={setGraph} 
+            activeNodeId={activeNodeId}
+            setActiveNodeId={setActiveNodeIdAndUpdate}
+            fetchNodes={() => fetchNodes(activeSessionId)}
+            activeSessionId={activeSessionId}
+            height={isGraphViewVisible ? `${100 - graphHeight}%` : '100%'}
+            updateSessionName={updateSessionName}
+            onNodeClick={handleNodeClick}
+          />
+        </div>
       </div>
     </div>
   );
