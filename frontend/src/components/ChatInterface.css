@@ -1,0 +1,146 @@
+.chat-interface {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: #343541;
+  overflow: hidden;
+  position: relative;
+}
+
+.chat-messages {
+  flex-grow: 1;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+}
+
+.message-container {
+  border-bottom: 1px solid rgba(0,0,0,.1);
+  text-align: left;
+  position: relative;
+}
+
+.user-message-container {
+  background-color: #343541;
+  padding: 24px 48px;
+}
+
+.ai-message-container {
+  background-color: #444654;
+  padding: 24px 48px;
+}
+
+.message-content-wrapper {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  align-items: flex-start;
+  position: relative;
+}
+
+.user-message {
+  color: #ECECF1;
+  margin-left: auto;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.ai-message {
+  display: flex;
+  gap: 24px;
+  color: #ECECF1;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.message-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 3px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #10A37F;
+}
+
+.ai-content {
+  flex-grow: 1;
+  overflow-x: auto;
+  padding-right: 32px; /* Space for action buttons */
+}
+
+/* Code block styling */
+.ai-content pre {
+  background-color: #282A36;
+  border-radius: 6px;
+  padding: 12px 16px;
+  overflow-x: auto;
+  margin: 16px 0;
+  border: 1px solid #3E3F4B;
+}
+
+.ai-content code {
+  font-family: 'Fira Code', monospace;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #E9ECEF;
+}
+
+/* Input area styling */
+.chat-input-container {
+  padding: 24px 48px;
+  background-color: #343541;
+  border-top: 1px solid #3E3F4B;
+}
+
+.chat-input-wrapper {
+  max-width: 800px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.chat-input {
+  display: flex;
+  background-color: #40414F;
+  border: 1px solid #3E3F4B;
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.chat-input input {
+  flex-grow: 1;
+  background: transparent;
+  border: none;
+  color: #ECECF1;
+  font-size: 15px;
+  padding: 0 12px;
+  outline: none;
+}
+
+.chat-input input::placeholder {
+  color: #8E8EA0;
+}
+
+.chat-input button {
+  background-color: transparent;
+  color: #8E8EA0;
+  border: none;
+  padding: 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.chat-input button:hover:not(:disabled) {
+  background-color: rgba(142, 142, 160, 0.1);
+  color: #ECECF1;
+}
+
+.chat-input button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
