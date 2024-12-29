@@ -40,7 +40,7 @@ That's it! Everything else (Python, Node.js, npm, etc.) will be automatically in
 2. Clone the repository and navigate to the project directory:
 
 ```bash
-git clone https://github.com/mohammadkazem-sadoughi/ChatGraph
+git clone https://github.com/mohammadkazem-sadoughi/chat-graph
 cd chat-graph
 ```
 
@@ -73,14 +73,6 @@ make run
 > 🔒 **Security Alert: fsevents.node**  
 > On first run, macOS might show a security warning about "fsevents.node". This is normal and safe for development:
 > - `fsevents` is a legitimate macOS file-watching module used by React's development server
-> - It's essential for features like hot-reloading (auto-updating while you code)
-> - This warning only appears in development, not in production builds
->
-> **To resolve:**
-> 1. Open System Settings → Privacy & Security
-> 2. Scroll down to the warning message about "fsevents.node"
-> 3. Click "Allow Anyway"
-> 4. Run `make run` again
 >
 > If the warning persists:
 > 1. Close your current terminal
