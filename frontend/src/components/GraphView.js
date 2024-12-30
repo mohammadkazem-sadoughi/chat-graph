@@ -123,7 +123,11 @@ function GraphView({ graph, setGraph, setActiveNodeId, activeNodeId, activeSessi
 
   const handleNodeContextMenu = (event, node) => {
     event.preventDefault();
-    setContextMenuPosition({ x: event.clientX, y: event.clientY });
+    const rect = containerRef.current.getBoundingClientRect();
+    setContextMenuPosition({
+      x: event.clientX - rect.left,
+      y: event.clientY - rect.top
+    });
     if (event.metaKey || event.ctrlKey) {
       setSelectedNodes(prev => {
         const newSet = new Set(prev);
@@ -189,6 +193,16 @@ function GraphView({ graph, setGraph, setActiveNodeId, activeNodeId, activeSessi
     setZoom(1);
   };
 
+  const isNodeInActivePath = (nodeId, activeId, graph) => {
+    let currentId = activeId;
+    while (currentId) {
+      if (currentId === nodeId) return true;
+      const currentNode = graph.find(n => n.node_index === currentId);
+      currentId = currentNode?.parentId;
+    }
+    return false;
+  };
+
   if (!activeSessionId || graph.length === 0) {
     return <div className="graph-view" style={{ height }}>No active session or graph data</div>;
   }
@@ -233,7 +247,7 @@ function GraphView({ graph, setGraph, setActiveNodeId, activeNodeId, activeSessi
                       y1={y}
                       x2={nodePositions[parentNode.node_index].x + NODE_WIDTH / 2}
                       y2={nodePositions[parentNode.node_index].y + calculateNodeHeight(parentNode.summary)}
-                      className="node-link"
+                      className={`node-link ${isNodeInActivePath(node.node_index, activeNodeId, graph) ? 'active-path' : ''}`}
                     />
                   )}
                   <g
@@ -245,7 +259,11 @@ function GraphView({ graph, setGraph, setActiveNodeId, activeNodeId, activeSessi
                       y={y}
                       width={NODE_WIDTH}
                       height={nodeHeight}
-                      className={`node ${isSelected ? 'selected' : ''} ${node.node_index === activeNodeId ? 'active' : ''}`}
+                      className={`node 
+                        ${isSelected ? 'selected' : ''} 
+                        ${node.node_index === activeNodeId ? 'active' : ''}
+                        ${isNodeInActivePath(node.node_index, activeNodeId, graph) && node.node_index !== activeNodeId ? 'in-active-path' : ''}
+                      `}
                     />
                     {isSelected && (
                       <rect
@@ -276,8 +294,8 @@ function GraphView({ graph, setGraph, setActiveNodeId, activeNodeId, activeSessi
           top: contextMenuPosition.y,
           left: contextMenuPosition.x,
         }}>
-          <button onClick={handleDeleteNodes} className="delete-zbutton">
-            <i className="fas fa-trash"></i> Delete Selected
+          <button onClick={handleDeleteNodes} className="delete-button">
+            delete
           </button>
         </div>
       )}

@@ -71,10 +71,9 @@ function LeftMenu({ sessions, activeSessionId, setActiveSessionId, createNewSess
       </ul>
       {sessions.length > 0 && (
         <>
-          <button onClick={handleClearAllClick} className="clear-all-button" title="Clear all sessions">
-            <i className="fas fa-trash-alt"></i> Clear All
+          <button onClick={handleClearAllClick} className="clear-all-button">
+            Clear All
           </button>
-          {/* Add Spacer Block */}
           <div className="spacer"></div>
         </>
       )}

@@ -130,7 +130,7 @@
 /* Clear All button styling */
 .clear-all-button {
   background-color: transparent;
-  color: #FF4A4A;
+  color: #ECECF1;
   border: 1px solid #4D4D4F;
   width: 100%;
   padding: 10px;
@@ -144,7 +144,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
 }
 
 .clear-all-button:hover {

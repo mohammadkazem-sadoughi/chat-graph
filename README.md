@@ -1,18 +1,26 @@
-This is a chatbot. It's like ChatGPT, but with some unique features.
+# ChatGraph
 
-Have you ever been using ChatGPT and wanted to explore a side thought without losing your main conversation? What do we do? Probably copy-pasting messages and then deleting them so your main chat LLM won't be distracted?
+Welcome to ChatGraph! It's like ChatGPT, but with a twist that lets you and your AI buddy organize your thoughts together.
 
-Here's what makes our chatbot special:
+## Introducing ThoughtNavigator
 
-1. **Graph View**: Your chat history is shown as an interactive graph. Each history message is a node, and you can click on any of them to start a new chat branch. It's like creating alternate timelines for your conversations!
+> ### A Little Backstory & Philosophy (Feel free to skip if you're just here for the tech!)
+>
+> Ever been chatting with your LLM and suddenly a bunch of side thoughts or questions pop into your head? Or maybe you want to juggle multiple thought processes at once? I often find myself, in the middle of a chat, thinking about a bunch of side but related questions (like what does the term you just said mean or what about this... but I don't want my LLM in later chat to get confused, so I ask the question but then click on edit or delete to simply remove it from its history. Not the best user experience.)
+>
+> There are interesting models like OpenAI's O1 that do some neat internal thinking with chains and trees of thought. But from our (user) side, it's still just a simple back-and-forth. We trust the AI to do its thing, but wouldn't it be awesome if we could actually manage those thoughts together?
+>
+> That's where ThoughtNavigator comes in. It's all about giving you the reins to organize both your thoughts and the AI's in a way that makes sense to you. Think of it as a joint brainstorming session where you get to steer the conversation.
 
-2. **Fork and Delete**: Start new chats from any point in your conversation history. Don't like a particular branch? Just delete it.
+### Thought Model:
 
-3. **All Local**: No need for internet - everything runs on your machine with a compact open-source model. Your conversations stay private and secure.
+1. **ThoughtMap**: Picture your chat history as an interactive map. Each message is a point, and you can branch off from any of them to start a new conversation path. It's like creating alternate timelines for your chats!
 
-4. **Super Easy Setup**: Just two commands and you're ready to chat. No need to go to 5 different websites first to get a bunch of keys, etc.
+2. **Fork and Delete**: Want to explore a new idea from an old conversation? Go ahead and start a new branch. Don't need a particular thought chain anymore? Just delete it.
 
-![ChatGraph Demo](documents/demo.gif)
+By the way, everything runs locally using an open-source LLM model, so no need to worry about your data going anywhere else.
+
+![ThoughtNavigator Demo](documents/demo.gif)
 
 ## Prerequisites
 

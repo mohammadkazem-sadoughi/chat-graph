@@ -77,10 +77,14 @@
 }
 
 .horizontal-resizer {
-  height: 1px;
+  height: 4px;
   background-color: #6b5c49;
   cursor: row-resize;
   width: 100%;
+}
+
+.horizontal-resizer:hover {
+  background-color: #6b5c49;
 }
 
 .vertical-resizer:hover,

@@ -1,5 +1,5 @@
 import React from 'react';
-import { FaBars, FaChartArea } from 'react-icons/fa';
+import { FaBars, FaProjectDiagram } from 'react-icons/fa';
 import './Header.css';
 
 function Header({ 
@@ -17,17 +17,23 @@ function Header({
           title="Toggle sidebar"
         >
           <FaBars />
+          <span className="button-text">
+            {isLeftMenuVisible ? 'Hide Menu' : 'Show Menu'}
+          </span>
         </button>
+        <div className="app-title">Chat Graph</div>
+      </div>
+      <div className="header-right">
         <button 
           className={`toggle-button ${!isGraphViewVisible ? 'active' : ''}`}
           onClick={onToggleGraphView}
           title="Toggle graph view"
         >
-          <FaChartArea />
+          <FaProjectDiagram />
+          <span className="button-text">
+            {isGraphViewVisible ? 'Hide Graph' : 'Show Graph'}
+          </span>
         </button>
-      </div>
-      <div className="header-right">
-        {/* Add any right-side header content here */}
       </div>
     </div>
   );
