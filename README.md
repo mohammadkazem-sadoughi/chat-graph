@@ -16,7 +16,9 @@ Welcome to ChatGraph! It's like ChatGPT, but with a twist that lets you and your
 
 2. Want to explore a new idea from an old conversation? Go ahead and start a new branch. Don't need a particular thought chain anymore? Just delete it.
 
-![ThoughtNavigator Demo](documents/demo.gif)
+<div align="center">
+  <img src="documents/demo.gif" alt="ThoughtNavigator Demo">
+</div>
 
 3. By the way, everything runs locally using an open-source LLM model, so no need to worry about your data going anywhere else.
 
