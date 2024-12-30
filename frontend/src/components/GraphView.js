@@ -10,7 +10,7 @@ const HORIZONTAL_SPACING = 60;
 function GraphView({ graph, setGraph, setActiveNodeId, activeNodeId, activeSessionId, height, fetchNodes, onNodeClick }) {
   const [selectedNodes, setSelectedNodes] = useState(new Set());
   const [contextMenuPosition, setContextMenuPosition] = useState(null);
-  const [transform, setTransform] = useState({ scale: 1, x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
   const svgRef = useRef(null);
   const containerRef = useRef(null);
 
@@ -177,49 +177,17 @@ function GraphView({ graph, setGraph, setActiveNodeId, activeNodeId, activeSessi
     setContextMenuPosition(null);
   };
 
-  const handleWheel = useCallback((event) => {
-    if (event.ctrlKey || event.metaKey) {
-      event.preventDefault();
-      const delta = event.deltaY;
-      const scaleFactor = delta > 0 ? 0.9 : 1.1;
-      
-      // Get the SVG element's bounding rectangle
-      const svgRect = svgRef.current.getBoundingClientRect();
-      
-      // Calculate mouse position relative to SVG
-      const mouseX = event.clientX - svgRect.left;
-      const mouseY = event.clientY - svgRect.top;
-      
-      setTransform(prev => {
-        const newScale = Math.min(Math.max(prev.scale * scaleFactor, 0.1), 4);
-        
-        // Calculate how the point under the mouse should move
-        const mousePointX = (mouseX - prev.x) / prev.scale;
-        const mousePointY = (mouseY - prev.y) / prev.scale;
-        
-        // Calculate the new position that keeps the point under the mouse
-        const newX = mouseX - mousePointX * newScale;
-        const newY = mouseY - mousePointY * newScale;
-        
-        return {
-          scale: newScale,
-          x: newX,
-          y: newY
-        };
-      });
-    }
-  }, []);
+  const handleZoomIn = () => {
+    setZoom(prev => Math.min(prev + 0.2, 2)); // Max zoom: 2x
+  };
 
-  useEffect(() => {
-    const svg = svgRef.current;
-    if (svg) {
-      svg.addEventListener('wheel', handleWheel, { passive: false });
+  const handleZoomOut = () => {
+    setZoom(prev => Math.max(prev - 0.2, 0.5)); // Min zoom: 0.5x
+  };
 
-      return () => {
-        svg.removeEventListener('wheel', handleWheel);
-      };
-    }
-  }, [handleWheel]);
+  const handleResetZoom = () => {
+    setZoom(1);
+  };
 
   if (!activeSessionId || graph.length === 0) {
     return <div className="graph-view" style={{ height }}>No active session or graph data</div>;
@@ -230,67 +198,78 @@ function GraphView({ graph, setGraph, setActiveNodeId, activeNodeId, activeSessi
       ref={containerRef}
       className="graph-view" 
       onClick={handleBackgroundClick} 
-      style={{ 
-        height
-      }}
+      style={{ height }}
     >
-      <svg 
-        ref={svgRef}
-        width="100%" 
-        height="100%" 
-        style={{minWidth: "800px", minHeight: "600px"}}
-      >
-        <g transform={`translate(${transform.x}, ${transform.y}) scale(${transform.scale})`}>
-          {graph.map((node) => {
-            const { x, y } = nodePositions[node.node_index];
-            const parentNode = graph.find(n => n.node_index === node.parentId);
-            const isSelected = selectedNodes.has(node.node_index);
-            const nodeHeight = calculateNodeHeight(node.summary);
+      <div className="zoom-controls">
+        <button onClick={handleZoomIn} className="zoom-button" title="Zoom In">
+          <i className="fas fa-plus" style={{ fontSize: '14px' }}></i>
+        </button>
+        <button onClick={handleResetZoom} className="zoom-button" title="Reset Zoom">
+          <i className="fas fa-redo" style={{ fontSize: '14px' }}></i>
+        </button>
+        <button onClick={handleZoomOut} className="zoom-button" title="Zoom Out">
+          <i className="fas fa-minus" style={{ fontSize: '14px' }}></i>
+        </button>
+      </div>
+      <div className="svg-container" style={{ transform: `scale(${zoom})`, transformOrigin: 'top left' }}>
+        <svg 
+          ref={svgRef}
+          width="100%" 
+          height="100%" 
+          style={{minWidth: "800px", minHeight: "600px"}}
+        >
+          <g>
+            {graph.map((node) => {
+              const { x, y } = nodePositions[node.node_index];
+              const parentNode = graph.find(n => n.node_index === node.parentId);
+              const isSelected = selectedNodes.has(node.node_index);
+              const nodeHeight = calculateNodeHeight(node.summary);
 
-            return (
-              <g key={`${activeSessionId}_${node.node_index}`}>
-                {parentNode && (
-                  <line
-                    x1={x + NODE_WIDTH / 2}
-                    y1={y}
-                    x2={nodePositions[parentNode.node_index].x + NODE_WIDTH / 2}
-                    y2={nodePositions[parentNode.node_index].y + calculateNodeHeight(parentNode.summary)}
-                    className="node-link"
-                  />
-                )}
-                <g
-                  onClick={(event) => handleNodeClick(event, node.node_index)}
-                  onContextMenu={(event) => handleNodeContextMenu(event, node)}
-                >
-                  <rect
-                    x={x}
-                    y={y}
-                    width={NODE_WIDTH}
-                    height={nodeHeight}
-                    className={`node ${isSelected ? 'selected' : ''} ${node.node_index === activeNodeId ? 'active' : ''}`}
-                  />
-                  {isSelected && (
-                    <rect
-                      x={x - 2}
-                      y={y - 2}
-                      width={NODE_WIDTH + 4}
-                      height={nodeHeight + 4}
-                      className="node-selection-ring"
-                      rx="10"
-                      ry="10"
+              return (
+                <g key={`${activeSessionId}_${node.node_index}`}>
+                  {parentNode && (
+                    <line
+                      x1={x + NODE_WIDTH / 2}
+                      y1={y}
+                      x2={nodePositions[parentNode.node_index].x + NODE_WIDTH / 2}
+                      y2={nodePositions[parentNode.node_index].y + calculateNodeHeight(parentNode.summary)}
+                      className="node-link"
                     />
                   )}
-                  <foreignObject x={x} y={y} width={NODE_WIDTH} height={nodeHeight}>
-                    <div xmlns="http://www.w3.org/1999/xhtml" className="node-content">
-                      {node.summary}
-                    </div>
-                  </foreignObject>
+                  <g
+                    onClick={(event) => handleNodeClick(event, node.node_index)}
+                    onContextMenu={(event) => handleNodeContextMenu(event, node)}
+                  >
+                    <rect
+                      x={x}
+                      y={y}
+                      width={NODE_WIDTH}
+                      height={nodeHeight}
+                      className={`node ${isSelected ? 'selected' : ''} ${node.node_index === activeNodeId ? 'active' : ''}`}
+                    />
+                    {isSelected && (
+                      <rect
+                        x={x - 2}
+                        y={y - 2}
+                        width={NODE_WIDTH + 4}
+                        height={nodeHeight + 4}
+                        className="node-selection-ring"
+                        rx="10"
+                        ry="10"
+                      />
+                    )}
+                    <foreignObject x={x} y={y} width={NODE_WIDTH} height={nodeHeight}>
+                      <div xmlns="http://www.w3.org/1999/xhtml" className="node-content">
+                        {node.summary}
+                      </div>
+                    </foreignObject>
+                  </g>
                 </g>
-              </g>
-            );
-          })}
-        </g>
-      </svg>
+              );
+            })}
+          </g>
+        </svg>
+      </div>
       {contextMenuPosition && (
         <div className="context-menu" style={{
           position: 'absolute',

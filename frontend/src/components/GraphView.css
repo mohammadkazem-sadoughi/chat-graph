@@ -1,9 +1,11 @@
 .graph-view {
+  position: relative;
   overflow: auto;
   width: 100%;
   height: 100%;
   background-color: #343541;
   padding: 20px;
+  touch-action: none;
 }
 
 /* Node styling */
@@ -117,9 +119,30 @@
 }
 
 /* SVG container */
+.svg-container {
+  transition: transform 0.2s ease;
+  overflow: auto;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 20px;
+}
+
+/* Ensure SVG maintains minimum dimensions */
 .graph-view svg {
-  min-width: 100%;
-  min-height: 100%;
+  min-width: 1200px;
+  min-height: 800px;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Optional: adjust the graph container to ensure content is centered */
+.graph-view svg g {
+  transform-origin: center;
+  transform: translate(0, 0);
 }
 
 /* Node selection highlight */
@@ -133,4 +156,32 @@
 
 .node.selected .node-selection-ring {
   opacity: 1;
+}
+
+/* Add these new styles */
+.zoom-controls {
+  position: fixed;
+  top: 80px;
+  right: 40px;
+  display: flex;
+  gap: 8px;
+  z-index: 1000;
+}
+
+.zoom-button {
+  background-color: #444654;
+  color: #ECECF1;
+  border: none;
+  border-radius: 4px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.zoom-button:hover {
+  background-color: #40414F;
 }
