@@ -4,11 +4,11 @@ Welcome to ChatGraph! It's like ChatGPT, but with a twist that lets you and your
 
 > ### A Little Backstory & Philosophy (Feel free to skip!)
 >
-> Ever been chatting with your LLM and suddenly a bunch of side thoughts or questions pop into your head? Or maybe you want to juggle multiple thought processes at once? I often find myself, in the middle of a chat, thinking about a bunch of side but related questions (like what does the term you just said mean or what about this... but I don't want my LLM in later chat to get confused, so I ask the question but then click on edit or delete to simply remove it from its history. Not the best user experience.)
+> Ever been chatting with your AI and suddenly a bunch of side relevant thoughts or questions pop into your head? Or maybe you want to juggle multiple thought processes at once but you dont want you or the AI to get confused? I often find myself there in middle of chats with ChatGPT (like what does the term you just said mean or what about this... but I don't want my AI in later chat to get confused, so I ask the question but then click on edit or delete to simply remove it from its history. Not the best user experience.)
 >
 > There are interesting models like OpenAI's O1 that do some neat internal thinking with chains and trees of thought. But from our (user) side, it's still just a simple back-and-forth. We trust the AI to do its thing, but wouldn't it be awesome if we could actually manage those thoughts together?
 >
-> That's where ThoughtNavigator comes in. It's all about giving you the reins to organize both your thoughts and the AI's in a way that makes sense to you. Think of it as a joint brainstorming session where you get to steer the conversation.
+> That's where Thought Navigation comes in. It's all about giving us (users) the reins to organize both our thoughts and the AI's in a way that makes sense to us. Think of it as a joint brainstorming session where you get to steer the conversation.
 
 ### Thought Navigation:
 
@@ -16,14 +16,15 @@ Welcome to ChatGraph! It's like ChatGPT, but with a twist that lets you and your
 
 2. Want to explore a new idea from an old conversation? Go ahead and start a new branch. Don't need a particular thought chain anymore? Just delete it.
 
+![ThoughtNavigator Demo](documents/demo.gif)
+
 3. By the way, everything runs locally using an open-source LLM model, so no need to worry about your data going anywhere else.
 
-![ThoughtNavigator Demo](documents/demo.gif)
 
 ## Prerequisites
 
 - macOS
-- At least 5GB of free disk space
+- At least 5GB of free disk space (to host the open-source LLM model)
 - Homebrew (Package Manager for macOS)
   ```bash
   # Install Homebrew if you haven't already
