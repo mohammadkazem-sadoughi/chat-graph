@@ -2,7 +2,7 @@
 
 Welcome to ChatGraph! It's like ChatGPT, but with a twist that lets you and your AI buddy organize your thoughts together.
 
-> ### A Little Backstory & Philosophy (Feel free to skip!)
+> ### A Little Backstory & Philosophy
 >
 > Ever been chatting with your AI and suddenly a bunch of side relevant thoughts or questions pop into your head? Or maybe you want to juggle multiple thought processes at once but you dont want you or the AI to get confused? I often find myself there in middle of chats with ChatGPT (like what does the term you just said mean or what about this... but I don't want my AI in later chat to get confused, so I ask the question but then click on edit or delete to simply remove it from its history. Not the best user experience.)
 >
