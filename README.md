@@ -2,9 +2,7 @@
 
 Welcome to ChatGraph! It's like ChatGPT, but with a twist that lets you and your AI buddy organize your thoughts together.
 
-## Introducing ThoughtNavigator
-
-> ### A Little Backstory & Philosophy (Feel free to skip if you're just here for the tech!)
+> ### A Little Backstory & Philosophy (Feel free to skip!)
 >
 > Ever been chatting with your LLM and suddenly a bunch of side thoughts or questions pop into your head? Or maybe you want to juggle multiple thought processes at once? I often find myself, in the middle of a chat, thinking about a bunch of side but related questions (like what does the term you just said mean or what about this... but I don't want my LLM in later chat to get confused, so I ask the question but then click on edit or delete to simply remove it from its history. Not the best user experience.)
 >
@@ -12,13 +10,13 @@ Welcome to ChatGraph! It's like ChatGPT, but with a twist that lets you and your
 >
 > That's where ThoughtNavigator comes in. It's all about giving you the reins to organize both your thoughts and the AI's in a way that makes sense to you. Think of it as a joint brainstorming session where you get to steer the conversation.
 
-### Thought Model:
+### Thought Navigation:
 
-1. **ThoughtMap**: Picture your chat history as an interactive map. Each message is a point, and you can branch off from any of them to start a new conversation path. It's like creating alternate timelines for your chats!
+1. Picture your chat history as an interactive map. Each message is a point, and you can branch off from any of them to start a new conversation path. It's like creating alternate timelines for your chats!
 
-2. **Fork and Delete**: Want to explore a new idea from an old conversation? Go ahead and start a new branch. Don't need a particular thought chain anymore? Just delete it.
+2. Want to explore a new idea from an old conversation? Go ahead and start a new branch. Don't need a particular thought chain anymore? Just delete it.
 
-By the way, everything runs locally using an open-source LLM model, so no need to worry about your data going anywhere else.
+3. By the way, everything runs locally using an open-source LLM model, so no need to worry about your data going anywhere else.
 
 ![ThoughtNavigator Demo](documents/demo.gif)
 
