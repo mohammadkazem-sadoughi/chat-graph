@@ -10,7 +10,7 @@ class LLM:
         Calls the LLM API and returns the complete response content.
         """
         response = requests.post(
-            "http://0.0.0.0:11434/api/chat",
+            "http://localhost:11434/api/chat",
             json={"model": self.model, "messages": messages, "stream": True},
             stream=True
         )
