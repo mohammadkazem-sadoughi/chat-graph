@@ -64,9 +64,17 @@ setup-ollama:
 setup-backend:
 	@echo "Setting up backend Python virtual environment and dependencies..."
 	@if [ ! -d "$(VENV_NAME)" ]; then \
-		python3.11 -m venv $(VENV_NAME); \
-	fi
-	. $(VENV_NAME)/bin/activate && \
+        if echo "$$(uname -s)" | grep -q "MINGW64_NT"; then \
+            python -m venv $(VENV_NAME); \
+        else \
+            python3 -m venv $(VENV_NAME); \
+        fi; \
+    fi
+	@if echo "$$(uname -s)" | grep -q "MINGW64_NT"; then \
+        . $(VENV_NAME)/Scripts/activate; \
+	else \
+        . $(VENV_NAME)/bin/activate; \
+	fi && \
 	$(PIP) install --upgrade pip && \
 	$(PIP) install -r backend/requirements.txt
 	@echo "Backend setup complete."
@@ -84,20 +92,32 @@ run:
 	@echo "Killing any existing servers..."
 	@$(MAKE) kill-servers
 	@trap '$(MAKE) kill-servers' EXIT && \
-	(. $(VENV_NAME)/bin/activate && \
-	cd backend && \
-	python3 app.py) & echo $$! > $(PID_FILE).backend & \
-	echo "Backend started on port $(BACKEND_PORT)" && \
-	sleep 2 && \
-	(cd $(REACT_APP_DIR) && npm start) & echo $$! > $(PID_FILE).frontend && \
-	wait
+	if echo "$$(uname -s)" | grep -q "MINGW64_NT"; then \
+        . $(VENV_NAME)/Scripts/activate && \
+        cd backend && \
+        python app.py & echo $$! > $(PID_FILE).backend; \
+	else \
+        . $(VENV_NAME)/bin/activate && \
+        cd backend && \
+        python3 app.py & echo $$! > $(PID_FILE).backend; \
+	fi && \
+    echo "Backend started on port $(BACKEND_PORT)" && \
+    sleep 2 && \
+    cd $(REACT_APP_DIR) && npm start & echo $$! > $(PID_FILE).frontend && \
+    wait
 
 # Run just the backend
 run-backend:
 	@echo "Starting backend..."
-	@(. $(VENV_NAME)/bin/activate && \
-	cd backend && \
-	python3 app.py)
+	@if echo "$$(uname -s)" | grep -q "MINGW64_NT"; then \
+        . $(VENV_NAME)/Scripts/activate && \
+        cd backend && \
+        python app.py; \
+    else \
+        . $(VENV_NAME)/bin/activate && \
+        cd backend && \
+        python3 app.py; \
+    fi
 
 # Clean up
 clean:
@@ -109,5 +129,10 @@ clean:
 # Add kill-servers target
 kill-servers:
 	@echo "Killing any existing servers..."
-	@pkill -f "python3 app.py" || true
-	@pkill -f "npm start" || true
+	@if echo "$$(uname -s)" | grep -q "MINGW64_NT"; then \
+        taskkill //F //IM "python.exe" //T || true; \
+        taskkill //F //IM "node.exe" //T || true; \
+	else \
+        pkill -f "python3 app.py" || true; \
+        pkill -f "npm start" || true; \
+	fi
